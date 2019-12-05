@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./App.scss";
 import FoodBox from "./components/FoodBox";
-import Form from "./components/Form";
+import AddFoodForm from "./components/AddFoodForm";
 
 import foods from "./foods.json";
 
@@ -10,40 +10,36 @@ class App extends Component {
     super(props);
     this.state = {
       foods: foods,
-      forms: Form,
-      displayForm: false
+      showForm: false
     };
     this.handleClick = this.handleClick.bind(this);
-    // this.displayForm = this.displayForm.bind(this);
+    this.triggerAddForm = this.triggerAddForm.bind(this);
+    this.addFoodHandler = this.addFoodHandler.bind(this);
   }
 
-  handleClick()
-    {
-        console.log("hello there");
-        
-    }
+  handleClick() {
+    console.log("hello there");
+  }
 
-  addFoodHandler = food => {
+  triggerAddForm() {
+    this.setState({
+      showForm: !this.state.showForm
+    });
+  }
+
+  addFoodHandler(food) {
     const foodsCopy = [...this.state.foods];
     foodsCopy.push(food);
     this.setState({
       foods: foodsCopy
     });
-  };
-/* 
-  displayForm = () => {
-    this.setState({
-      displayForm: !this.state.displayForm
-    });
-  }; */
+  }
 
   render() {
     return (
       <div className="App">
-        <button onClick={this.handleClick} /* className="btn btn-light" */>
-          Add food
-        </button>
-        <Form addFood={this.addFoodHandler} />
+        <button onClick={this.triggerAddForm}>Add food</button>
+        {this.state.showForm && <AddFoodForm addFood={this.addFoodHandler} />}
         {this.state.foods.map((food, index) => (
           <FoodBox
             key={index}
